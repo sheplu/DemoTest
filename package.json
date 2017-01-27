@@ -1,0 +1,18 @@
+{
+  "name": "demoTest",
+  "version": "0.0.0",
+  "description": "test",
+  "main": "app.js",
+  "engines": {
+    "node": "7.4.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "dependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.2.0"
+  }
+}
