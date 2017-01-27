@@ -8,7 +8,7 @@ var server = http.createServer(function(req, res) {
 	if(page == '/index') {
 		console.log("test");
 		res.writeHead(200, {"Content-Type": "text/html"});
-		res.write("Index page");
+		res.write("hello world");
 	}
 	else if (page == '/contact') {
 		console.log("test");
