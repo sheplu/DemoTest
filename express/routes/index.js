@@ -76,6 +76,39 @@ router.get('/todo/all', function(req, res, next) {
 	})
 });
 
+router.delete('/todo', function(req, res, next) {
+	Todo.remove({
+		_id: req.body.id
+	}, function(err) {
+		if (err) {
+			res.json(err)
+		}
+		res.json({
+			status: 200,
+			message: "Delete successfull"
+		})
+	})
+});
+
+router.put('/todo', function(req, res, next) {
+	Todo.findOneAndUpdate({
+		_id: req.body.id
+	},
+	{
+		title: req.body.title,
+		message: req.body.message	
+	}, 
+	{
+		new: true
+	}, 
+	function(err, todo) {
+		if(err) {
+			res.json(err);
+		}
+		res.json(todo);
+	})
+})
+
 router.get('/api', function(req, res, next) {
 	request.get('http://graph.facebook.com/me', 
 		function (err, response, body) {
