@@ -1,6 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var Todo = require('../models/todo');
+var request =  require('request');
+
+router.all("*", function(req, res, next) {
+	console.log("isLogged");
+	req.isLogged = "user";
+	next();
+});
+
+router.all("/admin", function(req, res, next) {
+	console.log("isAdmin");
+	next();
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -51,6 +63,25 @@ router.post('/todo', function(req, res, next) {
 			res.json(err);
 		}
 		res.json(todo);
+	});
+});;
+
+router.get('/todo/all', function(req, res, next) {
+	console.log(req.isLogged);
+	Todo.find({}, function(err, todos) {
+		if (err) {
+			res.json(err);
+		}
+		res.json(todos);
+	})
+});
+
+router.get('/api', function(req, res, next) {
+	request.get('http://graph.facebook.com/me', 
+		function (err, response, body) {
+			var api = JSON.parse(body);
+			var status = api.error.code;
+			res.json(status);
 	});
 });
 
