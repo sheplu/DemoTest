@@ -76,6 +76,17 @@ router.get('/todo/all', function(req, res, next) {
 	})
 });
 
+router.get('/todo/:id', function(req, res, next) {
+	Todo.find({
+		_id: req.params.id
+	}, function(err, todos) {
+		if (err) {
+			res.json(err);
+		}
+		res.json(todos);
+	})
+});
+
 router.delete('/todo', function(req, res, next) {
 	Todo.remove({
 		_id: req.body.id
@@ -108,6 +119,8 @@ router.put('/todo', function(req, res, next) {
 		res.json(todo);
 	})
 })
+
+
 
 router.get('/api', function(req, res, next) {
 	request.get('http://graph.facebook.com/me', 

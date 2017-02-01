@@ -48,3 +48,11 @@ body.addEventListener('mouseover', function(e) {
     + Math.floor(Math.random() * 255)+')';
 });
 
+var number = 10;
+
+for (var i = 0; i < 10; i++) {
+    if(i == 4) {
+        continue;
+    }
+    console.log(i)
+}
