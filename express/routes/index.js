@@ -6,6 +6,9 @@ var request =  require('request');
 router.all("*", function(req, res, next) {
 	console.log("isLogged");
 	req.isLogged = "user";
+	res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
+	res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
 	next();
 });
 
