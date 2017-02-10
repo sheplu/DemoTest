@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var passport = require('passport');
+var verify = require('./verify');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,6 +12,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+/*
 router.post('/', function(req, res, next) {
 	new User({
 		username: req.body.username,
@@ -22,6 +25,32 @@ router.post('/', function(req, res, next) {
 		}
 		res.json(user);
 	});
+});
+*/
+
+// REGISTER
+router.post('/', function(req, res, next) {
+	User.register( new User({
+		username: req.body.username,
+		mail: req.body.mail,
+		age: req.body.age
+	}),
+	req.body.password, function(err, user) {
+		if (err) {
+			res.json(err);
+		}
+		res.json(user);
+	})
+});
+
+//LOGIN
+router.post('/login', function(req, res, next) {
+	passport.authenticate("local", function(err, user, info){
+		req.logIn(user, function(err) {
+			var token = verify.getToken(user);
+			res.json(token);
+		})
+	})(req, res, next);
 });
 
 router.get("/all", function(req, res, next) {
