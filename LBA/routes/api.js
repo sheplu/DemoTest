@@ -55,13 +55,6 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get("/all", verify.verifyUser, function(req, res, next) {
-	console.log(req.decoded._doc);
-	if (req.decoded._doc.isAdmin != "Admin") {
-		res.json({
-			status: 400,
-			message: 'You are not an Administrator'
-		});		
-	}
 	User.find({}, function(err, users) {
 		if(err) {
 			res.json(err);
