@@ -4,6 +4,7 @@ var User = require('../models/user');
 var passport = require('passport');
 var verify = require('./verify');
 
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	res.json({
@@ -53,7 +54,14 @@ router.post('/login', function(req, res, next) {
 	})(req, res, next);
 });
 
-router.get("/all", function(req, res, next) {
+router.get("/all", verify.verifyUser, function(req, res, next) {
+	console.log(req.decoded._doc);
+	if (req.decoded._doc.isAdmin != "Admin") {
+		res.json({
+			status: 400,
+			message: 'You are not an Administrator'
+		});		
+	}
 	User.find({}, function(err, users) {
 		if(err) {
 			res.json(err);
