@@ -13,7 +13,8 @@ import { User } from '../models/user';
 */
 @Injectable()
 export class GithubUsers {
-  url = 'https://api.github.com';
+  url = 'https://api.github.com';//users
+  wars = 'http://swapi.co/api';//people/
 
   constructor(public http: Http) { }
 
@@ -21,5 +22,10 @@ export class GithubUsers {
   load(): Observable<User[]> {
     return this.http.get(`${this.url}/users`)
       .map(res => <User[]>res.json());
+  }
+  
+  loadDetails(login: string): Observable<User> {
+      return this.http.get(`${this.url}/users/${login}`)
+      .map(res => <User>res.json());
   }
 }
