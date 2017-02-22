@@ -5,9 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
 
 //mongoose.connect('mongodb://localhost:27017/urlAPI');
-mongoose.connect('mongodb://username:password@cluster0-shard-00-00-xrajz.mongodb.net:27017,cluster0-shard-00-01-xrajz.mongodb.net:27017,cluster0-shard-00-02-xrajz.mongodb.net:27017/urlAPI?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
+try {
+  mongoose.connect('mongodb://username:password@cluster0-shard-00-00-xrajz.mongodb.net:27017,cluster0-shard-00-01-xrajz.mongodb.net:27017,cluster0-shard-00-02-xrajz.mongodb.net:27017/urlAPI?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
+
+} catch (e){
+  console.log("erreur");
+}
+//mongoose.connect('mongodb://username:password@cluster0-shard-00-00-xrajz.mongodb.net:27017,cluster0-shard-00-01-xrajz.mongodb.net:27017,cluster0-shard-00-02-xrajz.mongodb.net:27017/urlAPI?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
 var db = mongoose.connection;
 db.once('open', function() {
   console.log("connected to db");
@@ -30,6 +38,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Initiate passportjs
+var User = require('./models/user');
+app.use(passport.initialize());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use('/', index);
 app.use('/users', users);

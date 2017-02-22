@@ -1,0 +1,9 @@
+<h1>
+  Todos {{ title }}
+</h1>
+<ul *ngIf ="todos.length > 0">
+	{{todos.length}}
+	<li *ngFor ="let todo of todos"> 
+		{{todo.title}}
+	</li>
+</ul>
